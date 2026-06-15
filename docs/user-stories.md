@@ -1,23 +1,51 @@
-# Mapeamento de Stakeholders — ClassHub
+# User Stories — ClassHub
 
-Este documento identifica as partes interessadas (stakeholders) diretas e indiretas envolvidas no ecossistema do **ClassHub**, detalhando seus papéis, interesses e níveis de interação com o sistema.
+Este documento detalha as histórias de utilizador (User Stories) que definem os requisitos funcionais do sistema, priorizadas para o MVP e para a funcionalidade inovadora.
 
-## 1. Estudantes
-* **Papel no Sistema:** Usuários finais primários (consumidores de conteúdo).
-* **Interesses Principais:** Acesso facilitado e ininterrupto aos materiais de estudo, clareza nos prazos de entrega, facilidade no envio de atividades (upload de arquivos) e acompanhamento em tempo real de suas notas e progresso.
-* **Nível de Interação:** Alto (uso diário/frequente).
+## US01: Criação de Turmas
+* **Descrição:** Como professor, desejo criar uma nova turma definindo um nome e uma disciplina, para que o sistema gere um código de acesso único.
+* **Critérios de Aceitação:**
+  * O sistema deve validar o preenchimento dos campos obrigatórios (Nome e Disciplina).
+  * O sistema deve gerar e exibir um código alfanumérico único de 7 caracteres após a gravação.
+  * A nova turma deve ficar imediatamente visível no painel principal do professor.
 
-## 2. Professores
-* **Papel no Sistema:** Usuários finais primários (produtores de conteúdo e avaliadores).
-* **Interesses Principais:** Ferramentas ágeis para criação e gestão de turmas, publicação eficiente de atividades e comunicados, recebimento organizado de trabalhos e um sistema seguro/sigiloso para correção e atribuição de notas.
-* **Nível de Interação:** Alto (uso diário/frequente).
+## US02: Ingresso de Estudantes
+* **Descrição:** Como estudante, desejo inserir um código de acesso no sistema para me matricular numa turma específica.
+* **Critérios de Aceitação:**
+  * O sistema deve apresentar um campo para inserção do código no painel do aluno.
+  * O sistema deve validar se o código existe e está ativo.
+  * Em caso de sucesso, o aluno deve ser redirecionado para o mural da turma e adicionado à lista de participantes.
 
-## 3. Coordenadores Acadêmicos
-* **Papel no Sistema:** Usuários gerenciais.
-* **Interesses Principais:** Visão macro do engajamento das turmas, monitoramento do cumprimento do plano de ensino pelos professores e identificação de alunos com baixo desempenho ou risco de perda de prazos (apoiados pelas métricas do sistema).
-* **Nível de Interação:** Médio (uso analítico/periódico).
+## US03: Publicação de Atividades
+* **Descrição:** Como professor, desejo publicar uma atividade no mural definindo título, instruções e data/hora limite, para avaliar os estudantes.
+* **Critérios de Aceitação:**
+  * A interface deve permitir a configuração de um prazo limite de entrega.
+  * Ao publicar, a atividade deve aparecer no mural de todos os alunos matriculados.
+  * O sistema deve disparar um evento assíncrono para notificar os alunos (preparação para envio de e-mails).
 
-## 4. Administradores (Equipe de TI)
-* **Papel no Sistema:** Mantenedores e suporte técnico da instituição.
-* **Interesses Principais:** Estabilidade da plataforma, gestão de infraestrutura (banco de dados e armazenamento em nuvem), segurança dos dados (controle de acessos/RBAC) e suporte na resolução de problemas ou configuração de permissões em massa.
-* **Nível de Interação:** Baixo/Médio (manutenção contínua e suporte técnico).
+## US04: Submissão de Entregas (Upload)
+* **Descrição:** Como estudante, desejo fazer o upload de um ficheiro numa atividade para registar a minha entrega antes do prazo limite.
+* **Critérios de Aceitação:**
+  * O sistema deve aceitar ficheiros (PDF, DOCX, ZIP) com um limite técnico de 50MB.
+  * O status da atividade no painel do aluno deve ser alterado para "Entregue".
+  * Se o prazo limite tiver expirado, o sistema deve bloquear o envio ou marcar visualmente como "Entregue com atraso", dependendo da configuração do professor.
+
+## US05: Avaliação e Lançamento de Notas
+* **Descrição:** Como professor, desejo aceder à entrega de um aluno e atribuir uma nota numérica, para compor a sua avaliação final.
+* **Critérios de Aceitação:**
+  * O professor deve conseguir visualizar o ficheiro submetido pelo aluno.
+  * A nota deve ser gravada no banco de dados e vinculada apenas àquele aluno específico (garantia de sigilo).
+  * O aluno deve receber uma notificação no sistema indicando que a sua atividade foi avaliada.
+
+## US06: Dashboard de Pendências
+* **Descrição:** Como estudante, desejo visualizar um quadro consolidado com as minhas atividades pendentes, ordenadas pelo prazo mais próximo, para organizar a minha rotina de estudos.
+* **Critérios de Aceitação:**
+  * Atividades que já possuem submissão registada não devem aparecer na lista de pendências.
+  * Atividades cujo prazo expira em menos de 24 horas devem receber um destaque visual (ex: cor vermelha ou ícone de alerta).
+
+## US07: Módulo MindFlow (Funcionalidade Inovadora)
+* **Descrição:** Como estudante, desejo que o sistema organize as minhas tarefas automaticamente num painel Kanban pessoal baseado em pesos de prioridade (proximidade do prazo e complexidade), para reduzir a minha procrastinação.
+* **Critérios de Aceitação:**
+  * O sistema deve calcular o peso de cada tarefa ativa e reordenar a coluna "A Fazer" diariamente.
+  * O aluno deve receber "badges" (conquistas) visuais ao entregar múltiplas atividades de forma antecipada ou no prazo correto.
+  * Coordenadores devem ter acesso a um relatório que sinaliza alunos com alto índice de tarefas acumuladas no painel.
