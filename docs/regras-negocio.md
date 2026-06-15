@@ -1,6 +1,5 @@
 # Regras de Negócio — ClassHub
 
-Este documento lista as principais regras de negócio (RN) que regem o domínio do sistema de gestão de sala de aula online, definindo restrições e lógicas que devem ser obrigatoriamente respeitadas pela aplicação.
 
 ## 1. Listagem das Regras de Negócio
 
