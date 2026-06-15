@@ -1,6 +1,5 @@
 # Mapeamento de Stakeholders — ClassHub
 
-Este documento identifica as partes interessadas (stakeholders) diretas e indiretas envolvidas no ecossistema do **ClassHub**, detalhando seus papéis, interesses e níveis de interação com o sistema.
 
 ## 1. Estudantes
 * **Papel no Sistema:** Usuários finais primários (consumidores de conteúdo).
