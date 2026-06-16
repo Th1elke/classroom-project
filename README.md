@@ -6,11 +6,11 @@ Este repositório armazena toda a documentação de engenharia de requisitos, mo
 
 ---
 
-## 👥 Equipa de Desenvolvimento
-* **Membro A:** [Preencher com o seu Nome]
-* **Membro B:** [Preencher com Nome do Colega]
-* **Membro C:** [Preencher com Nome do Colega]
-
+## 👥 Equipe de Desenvolvimento
+*
+*
+*
+*
 ---
 
 ## 📂 Guia de Navegação do Repositório
