@@ -4,10 +4,10 @@ Projeto da disciplina **Modelagem e Projetos em Engenharia de Software** — Pro
 Sistema de gestão de turmas, atividades, avaliações e comunicação entre professores e estudantes, semelhante ao Google Classroom.
 
 ## 👥 Integrantes
+- _Gabriel Ribeiro Rosa_
 - _Gustavo Henrique Thielke_
 - _Matheus Meggiolaro Bönmann_
 - _Murilo Gomes Monteiro Morgado_
-- _Pedro Ribas Meotti_
 
 ## 🔗 Links
 - **Gestor de Projetos (Kanban):** _inserir link do GitHub Projects / Trello / Jira_
