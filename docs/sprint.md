@@ -14,7 +14,7 @@ Registro do processo de construção da solução ao longo das duas aulas da ava
 |------------|-------------------|
 | _Gabriel Ribeiro Rosa_ | Visão do Produto, Stakeholders, README |
 | _Murilo Gomes Monteiro Morgado_ | Regras de Negócio, User Stories |
-| _Matheus Meggiolaro Bönmann_ | MVP, Backlog |
+| _Matheus_ | MVP, Backlog |
 | _Gustavo Henrique Thielke_ | Configuração do repositório GitHub e do quadro Kanban |
 
 > Substituir pelos nomes reais do grupo. A divisão acima foi a planejada no início do sprint.
@@ -43,7 +43,7 @@ Registro do processo de construção da solução ao longo das duas aulas da ava
 
 | Integrante | Responsabilidade |
 |------------|-------------------|
-| _Matheus Meggiolaro Bönmann_ | BPMN — processo de Entrega de Atividade |
+| _Matheus_ | BPMN — processo de Entrega de Atividade |
 | _Murilo Gomes Monteiro Morgado_ | UML — Diagrama de Casos de Uso |
 | _Gustavo Henrique Thielke_ | Arquitetura + Modelo C4 (Contexto e Containers) |
 | _Gabriel Ribeiro Rosa_ | Decisões Arquiteturais (ADRs) e revisão geral de consistência |
