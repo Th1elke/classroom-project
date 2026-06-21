@@ -1,51 +1,124 @@
-# User Stories — ClassHub
+# User Stories — AulaConecta
 
-Este documento detalha as histórias de utilizador (User Stories) que definem os requisitos funcionais do sistema, priorizadas para o MVP e para a funcionalidade inovadora.
+10 User Stories cobrindo o ciclo central da plataforma. Cada uma possui **identificador**, **descrição** (papel / desejo / benefício) e **critérios de aceitação** no formato *Dado / Quando / Então*. Ao lado, indicamos as **Regras de Negócio** relacionadas.
 
-## US01: Criação de Turmas
-* **Descrição:** Como professor, desejo criar uma nova turma definindo um nome e uma disciplina, para que o sistema gere um código de acesso único.
-* **Critérios de Aceitação:**
-  * O sistema deve validar o preenchimento dos campos obrigatórios (Nome e Disciplina).
-  * O sistema deve gerar e exibir um código alfanumérico único de 7 caracteres após a gravação.
-  * A nova turma deve ficar imediatamente visível no painel principal do professor.
+---
 
-## US02: Ingresso de Estudantes
-* **Descrição:** Como estudante, desejo inserir um código de acesso no sistema para me matricular numa turma específica.
-* **Critérios de Aceitação:**
-  * O sistema deve apresentar um campo para inserção do código no painel do aluno.
-  * O sistema deve validar se o código existe e está ativo.
-  * Em caso de sucesso, o aluno deve ser redirecionado para o mural da turma e adicionado à lista de participantes.
+## US01 — Criar turma
+**Como** professor, **desejo** criar uma turma com nome e código de convite, **para** organizar meus estudantes e atividades.
+*Regras relacionadas: RN01, RN05*
 
-## US03: Publicação de Atividades
-* **Descrição:** Como professor, desejo publicar uma atividade no mural definindo título, instruções e data/hora limite, para avaliar os estudantes.
-* **Critérios de Aceitação:**
-  * A interface deve permitir a configuração de um prazo limite de entrega.
-  * Ao publicar, a atividade deve aparecer no mural de todos os alunos matriculados.
-  * O sistema deve disparar um evento assíncrono para notificar os alunos (preparação para envio de e-mails).
+**Critérios de aceitação**
+- Dado que sou um professor autenticado, quando preencho o nome da turma e confirmo, então a turma é criada e recebo um **código de convite** único.
+- Dado que sou um estudante, quando tento acessar a criação de turma, então a ação é **negada**.
 
-## US04: Submissão de Entregas (Upload)
-* **Descrição:** Como estudante, desejo fazer o upload de um ficheiro numa atividade para registar a minha entrega antes do prazo limite.
-* **Critérios de Aceitação:**
-  * O sistema deve aceitar ficheiros (PDF, DOCX, ZIP) com um limite técnico de 50MB.
-  * O status da atividade no painel do aluno deve ser alterado para "Entregue".
-  * Se o prazo limite tiver expirado, o sistema deve bloquear o envio ou marcar visualmente como "Entregue com atraso", dependendo da configuração do professor.
+---
 
-## US05: Avaliação e Lançamento de Notas
-* **Descrição:** Como professor, desejo aceder à entrega de um aluno e atribuir uma nota numérica, para compor a sua avaliação final.
-* **Critérios de Aceitação:**
-  * O professor deve conseguir visualizar o ficheiro submetido pelo aluno.
-  * A nota deve ser gravada no banco de dados e vinculada apenas àquele aluno específico (garantia de sigilo).
-  * O aluno deve receber uma notificação no sistema indicando que a sua atividade foi avaliada.
+## US02 — Matricular-se em turma
+**Como** estudante, **desejo** ingressar em uma turma usando um código de convite, **para** acessar suas atividades e conteúdos.
+*Regras relacionadas: RN02, RN05*
 
-## US06: Dashboard de Pendências
-* **Descrição:** Como estudante, desejo visualizar um quadro consolidado com as minhas atividades pendentes, ordenadas pelo prazo mais próximo, para organizar a minha rotina de estudos.
-* **Critérios de Aceitação:**
-  * Atividades que já possuem submissão registada não devem aparecer na lista de pendências.
-  * Atividades cujo prazo expira em menos de 24 horas devem receber um destaque visual (ex: cor vermelha ou ícone de alerta).
+**Critérios de aceitação**
+- Dado um código válido, quando informo o código, então sou matriculado e passo a ver o conteúdo da turma.
+- Dado um código inválido ou expirado, quando informo o código, então recebo uma mensagem de erro e **não** sou matriculado.
+- Dado que não estou matriculado, quando tento abrir a turma diretamente, então o acesso é **bloqueado**.
 
-## US07: Módulo MindFlow (Funcionalidade Inovadora)
-* **Descrição:** Como estudante, desejo que o sistema organize as minhas tarefas automaticamente num painel Kanban pessoal baseado em pesos de prioridade (proximidade do prazo e complexidade), para reduzir a minha procrastinação.
-* **Critérios de Aceitação:**
-  * O sistema deve calcular o peso de cada tarefa ativa e reordenar a coluna "A Fazer" diariamente.
-  * O aluno deve receber "badges" (conquistas) visuais ao entregar múltiplas atividades de forma antecipada ou no prazo correto.
-  * Coordenadores devem ter acesso a um relatório que sinaliza alunos com alto índice de tarefas acumuladas no painel.
+---
+
+## US03 — Publicar atividade
+**Como** professor, **desejo** publicar uma atividade com descrição, prazo e nota máxima, **para** disponibilizar tarefas à turma.
+*Regras relacionadas: RN01, RN04, RN06*
+
+**Critérios de aceitação**
+- Dado que sou professor da turma, quando publico uma atividade com **data limite** e **nota máxima**, então ela aparece para todos os estudantes matriculados.
+- Dado que a atividade foi publicada, quando a publicação é concluída, então os estudantes são **notificados** automaticamente.
+
+---
+
+## US04 — Entregar atividade
+**Como** estudante, **desejo** entregar uma atividade antes do prazo, **para** que minha tarefa seja registrada e avaliada.
+*Regras relacionadas: RN03, RN07*
+
+**Critérios de aceitação**
+- Dado que o prazo **não** expirou, quando envio minha entrega, então ela é registrada com data/hora.
+- Dado que o prazo **expirou**, quando tento entregar, então a entrega é **bloqueada** ou marcada como **atrasada**, conforme a política da turma.
+- Dado que minha entrega **já foi corrigida**, quando tento editá-la, então a alteração é **impedida**.
+
+---
+
+## US05 — Corrigir e lançar nota
+**Como** professor, **desejo** corrigir entregas e lançar notas com feedback, **para** avaliar o desempenho dos estudantes.
+*Regras relacionadas: RN04, RN06, RN07*
+
+**Critérios de aceitação**
+- Dado que sou o professor responsável, quando lanço uma nota (≤ nota máxima) e um comentário, então a entrega passa a constar como **corrigida**.
+- Dado que a nota foi lançada, quando a correção é salva, então o estudante é **notificado**.
+- Dado que **não** sou o professor responsável, quando tento corrigir, então a ação é **negada**.
+
+---
+
+## US06 — Consultar notas e feedback
+**Como** estudante, **desejo** consultar minhas notas e feedbacks, **para** acompanhar meu desempenho.
+*Regras relacionadas: RN08*
+
+**Critérios de aceitação**
+- Dado que tenho entregas corrigidas, quando acesso a área de notas, então vejo a nota e o feedback de cada atividade.
+- Dado que sou um estudante, quando acesso as notas, então vejo **apenas as minhas** (não as de outros estudantes).
+
+---
+
+## US07 — Receber notificações
+**Como** estudante, **desejo** receber notificações de novas atividades e notas, **para** não perder prazos nem novidades.
+*Regras relacionadas: RN06*
+
+**Critérios de aceitação**
+- Dado que uma atividade foi publicada na minha turma, quando isso ocorre, então recebo uma notificação.
+- Dado que uma nota minha foi lançada, quando isso ocorre, então recebo uma notificação.
+
+---
+
+## US08 — Comunicar-se no mural da turma
+**Como** professor ou estudante, **desejo** publicar e responder mensagens no mural da turma, **para** centralizar a comunicação.
+*Regras relacionadas: RN02, RN08*
+
+**Critérios de aceitação**
+- Dado que sou membro da turma, quando publico uma mensagem, então ela fica visível aos demais membros.
+- Dado que **não** sou membro da turma, quando tento ver o mural, então o acesso é **negado**.
+
+---
+
+## US09 — Gerenciar usuários e papéis
+**Como** administrador, **desejo** cadastrar usuários e atribuir papéis, **para** controlar quem pode fazer o quê na plataforma.
+*Regras relacionadas: RN01, RN08*
+
+**Critérios de aceitação**
+- Dado que sou administrador, quando cadastro um usuário e defino seu papel (estudante/professor/coordenador), então ele passa a ter as permissões correspondentes.
+- Dado que um usuário foi **desativado**, quando ele tenta acessar, então o acesso é **bloqueado**.
+
+---
+
+## US10 — Acompanhar risco de evasão *(Funcionalidade Inovadora)*
+**Como** professor, **desejo** visualizar um painel com o nível de engajamento e risco de evasão dos estudantes, **para** intervir precocemente com quem está se desengajando.
+*Regras relacionadas: RN06, RN08*
+
+**Critérios de aceitação**
+- Dado que há dados de atividade (acessos, entregas, atrasos, notas), quando abro o painel, então vejo um **indicador de risco** por estudante (ex.: baixo / médio / alto).
+- Dado um estudante em risco alto, quando o indicador é calculado, então o professor pode receber um **alerta**.
+- Dado que sou um estudante, quando tento acessar o painel, então o acesso é **negado** (visível apenas a professor/coordenador).
+
+---
+
+### Mapa rápido US × RN
+
+| US | RN relacionadas |
+|----|-----------------|
+| US01 | RN01, RN05 |
+| US02 | RN02, RN05 |
+| US03 | RN01, RN04, RN06 |
+| US04 | RN03, RN07 |
+| US05 | RN04, RN06, RN07 |
+| US06 | RN08 |
+| US07 | RN06 |
+| US08 | RN02, RN08 |
+| US09 | RN01, RN08 |
+| US10 | RN06, RN08 |
