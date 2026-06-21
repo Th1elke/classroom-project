@@ -106,19 +106,3 @@
 - Dado um estudante em risco alto, quando o indicador é calculado, então o professor pode receber um **alerta**.
 - Dado que sou um estudante, quando tento acessar o painel, então o acesso é **negado** (visível apenas a professor/coordenador).
 
----
-
-### Mapa rápido US × RN
-
-| US | RN relacionadas |
-|----|-----------------|
-| US01 | RN01, RN05 |
-| US02 | RN02, RN05 |
-| US03 | RN01, RN04, RN06 |
-| US04 | RN03, RN07 |
-| US05 | RN04, RN06, RN07 |
-| US06 | RN08 |
-| US07 | RN06 |
-| US08 | RN02, RN08 |
-| US09 | RN01, RN08 |
-| US10 | RN06, RN08 |
