@@ -8,7 +8,7 @@ Registro das principais decisões arquiteturais no formato **ADR** (Architecture
 
 **Contexto.** O núcleo é um CRUD com regras de negócio (RN01–RN08); ao mesmo tempo, há necessidade de processamento assíncrono (notificações — RN06) e de analytics (risco de evasão — inovação).
 
-**Decisão.** Adotar **arquitetura em camadas** para o núcleo e **publish/subscribe** (message broker) para fluxos assíncronos.
+**Decisão.** Adotar **arquitetura em camadas** para o núcleo e **publish/subscribe** (message broker) para fluxos assíncronos. Como tecnologia de broker, opta-se pelo **RabbitMQ** — suficiente para o volume do MVP e mais simples de operar; o Kafka fica como evolução natural caso o volume de eventos cresça muito (ex.: histórico de eventos para auditoria/replay).
 
 **Alternativas consideradas.**
 - *Monolito puramente em camadas:* simples, mas acoplaria notificações/analytics ao backend e degradaria desempenho.
@@ -40,7 +40,7 @@ Registro das principais decisões arquiteturais no formato **ADR** (Architecture
 
 **Contexto.** A **RN06** exige notificar estudantes em novas atividades e notas, sem travar a publicação/correção.
 
-**Decisão.** O backend **publica eventos** (`AtividadePublicada`, `NotaLancada`) no broker; um **Serviço de Notificações** os consome e envia e-mail/push.
+**Decisão.** O backend **publica eventos** (`AtividadePublicada`, `NotaLancada`, `EntregaRegistrada`) no broker; um **Serviço de Notificações** os consome e envia e-mail/push.
 
 **Alternativas consideradas.**
 - *Envio síncrono dentro da requisição:* mais simples, porém lento e frágil (falha no provedor derruba a operação principal).
