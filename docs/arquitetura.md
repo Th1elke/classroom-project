@@ -1,45 +1,53 @@
-# Documento de Arquitetura de Software — ClassHub
+# Arquitetura de Software — AulaConecta
 
-## 1. Escolha e Justificativa da Arquitetura
+## 1. Estilo arquitetural escolhido: **Híbrido (Camadas + Publish/Subscribe)**
 
-A solução adota uma **Arquitetura Híbrida**, combinando um padrão **Em Camadas (Monolito Modular)** para o núcleo da aplicação com um padrão **Publish-Subscribe (Event-Driven)** para processamento assíncrono.
+O núcleo do sistema adota uma **arquitetura em camadas** (apresentação, aplicação/negócio e persistência), complementada por um **mecanismo orientado a eventos (publish/subscribe)** para tudo que deve acontecer de forma **assíncrona e desacoplada** (notificações e analytics de risco de evasão).
 
-**Justificativa:**
-No contexto de um sistema escolar, as entidades (Estudantes, Turmas, Avaliações) possuem forte relacionamento relacional. Um monolito em camadas isola bem a regra de negócios sem o alto custo inicial e a complexidade de rede de microsserviços. No entanto, para não travar o servidor durante o envio massivo de notificações ou uploads pesados, acoplamos o modelo *Publish-Subscribe* para jogar essas tarefas em segundo plano.
+### Camadas do núcleo
+| Camada | Responsabilidade |
+|--------|------------------|
+| **Apresentação** | Aplicação Web (SPA) — interface de professores, estudantes, coordenadores e administradores. |
+| **Aplicação / Negócio** | API/Backend — orquestra os casos de uso, aplica as **regras de negócio** (RN01–RN08), autenticação e autorização. |
+| **Persistência** | Acesso ao banco de dados relacional e ao armazenamento de arquivos. |
 
----
+### Componentes orientados a eventos
+- **Message Broker (pub/sub):** recebe eventos publicados pelo backend (ex.: `AtividadePublicada`, `NotaLancada`, `EntregaRegistrada`).
+- **Serviço de Notificações:** consome eventos e envia e-mail/push (atende **RN06**).
+- **Serviço de Risco de Evasão (Inovação):** consome os mesmos eventos de engajamento e calcula o indicador de risco por estudante.
 
-## 2. Decisões Arquiteturais (ADRs)
+## 2. Justificativa da escolha
 
-Conforme as necessidades do sistema, tomamos as seguintes decisões técnicas:
+A decisão considerou os **requisitos** e o **contexto** do sistema:
 
-### ADR 01: Escolha do Mecanismo de Autenticação (RBAC e JWT)
-* **Contexto:** O sistema precisa garantir o sigilo de notas (RN04) e restringir a criação de turmas apenas a professores (RN01).
-* **Decisão:** Implementação de tokens JWT (JSON Web Tokens) com controle de acesso baseado em funções (Role-Based Access Control). O perfil do usuário viaja criptografado no token.
-* **Justificativa:** Essa abordagem é *stateless* (não sobrecarrega a memória do servidor com sessões) e protege a API contra vulnerabilidades de IDOR ao validar a posse dos dados a cada requisição.
+1. **Camadas para o núcleo (simplicidade e coesão):** o coração do produto é um CRUD rico (turmas, atividades, entregas, notas) com regras de negócio claras. Uma arquitetura em camadas é simples de desenvolver, testar e manter por uma equipe pequena — não há complexidade que justifique **microserviços** completos (que trariam sobrecarga operacional desnecessária para a escala do MVP).
+2. **Publish/Subscribe para eventos (desacoplamento):** a **RN06** exige notificações automáticas, e a publicação/correção de atividades **não deve travar** esperando o envio. Um broker de mensagens permite que essas operações apenas **publiquem um evento** e sigam adiante, enquanto consumidores processam em segundo plano. Isso melhora desempenho percebido e resiliência (se o envio falhar, há reprocessamento).
+3. **Reaproveitamento para a inovação:** o **Serviço de Risco de Evasão** consome os **mesmos eventos**, sem acoplar-se ao núcleo. A funcionalidade inovadora "encaixa" na arquitetura sem reescrever o backend.
+4. **Por que não puramente em camadas?** Notificações e analytics síncronos sobrecarregariam o backend e acoplariam responsabilidades distintas. Por que não microserviços? O custo de rede, deploy e observabilidade não se justifica nesta fase. A **abordagem híbrida** captura o melhor dos dois mundos.
 
-### ADR 02: Estratégia de Upload de Arquivos
-* **Contexto:** Os alunos enviarão anexos de até 50MB (RN05). Processar isso na API principal causaria gargalos.
-* **Decisão:** Utilização do padrão *Pre-signed URLs* com armazenamento em Object Storage (S3).
-* **Justificativa:** O back-end apenas autoriza a transferência; o upload pesado é feito diretamente do navegador do aluno para a nuvem, poupando os recursos de processamento da nossa API.
+## 3. Modelo C4
 
-### ADR 03: Estratégia de Notificações Assíncronas
-* **Contexto:** Publicar uma atividade para 100 alunos exige o disparo de 100 e-mails.
-* **Decisão:** O back-end publicará um evento `NovaAtividade` em um Message Broker (Redis). Um *Worker* separado consumirá essa fila para disparar os e-mails.
-* **Justificativa:** Garante que a requisição do professor seja respondida em milissegundos, enquanto o processamento demorado ocorre de forma invisível em segundo plano.
+### Nível 1 — Contexto (`C4contexto.png`)
+Mostra o sistema **AulaConecta** no centro, os quatro tipos de usuário (Estudante, Professor, Coordenador, Administrador) e os sistemas externos: **Serviço de Notificação** (e-mail/push) e **Armazenamento de Arquivos** (object storage).
 
----
+### Nível 2 — Containers (`C4containers.png`)
+Detalha os containers internos:
+- **Aplicação Web (SPA)** — React, interface do usuário (HTTPS); **faz o upload/download dos arquivos das entregas direto no object storage**, usando URL pré-assinada.
+- **API / Backend (em camadas)** — aplica regras, autenticação e casos de uso; expõe API JSON; **emite as URLs pré-assinadas** que autorizam o envio dos arquivos.
+- **Banco de Dados (PostgreSQL)** — dados relacionais (usuários, turmas, atividades, entregas, notas) e a referência (URL/chave) de cada arquivo.
+- **Message Broker (pub/sub)** — distribui eventos do domínio.
+- **Serviço de Notificações (worker)** — consome eventos e aciona o provedor de e-mail/push.
+- **Serviço de Risco de Evasão (worker)** — consome eventos de engajamento e gera o indicador de risco (inovação).
+- **Object Storage (externo)** — guarda os arquivos das entregas.
 
-## 3. Mapeamento do Modelo C4
+## 4. Requisitos não funcionais atendidos
 
-O detalhamento visual desta arquitetura encontra-se na pasta `c4/` do repositório:
-* **Nível 1 (Contexto):** Demonstra a interação do ClassHub com os atores principais (Estudantes, Professores, Coordenadores e Admins) e sistemas externos (Serviço de E-mail).
-* **Nível 2 (Containers):** Detalha a subdivisão técnica em: *Single-Page Application* (Front-end), *API Application* (Back-end em camadas), *Banco de Dados Relacional* e *Message Broker/Worker*.
+| RNF | Como a arquitetura atende |
+|-----|---------------------------|
+| **Segurança** | Autenticação e autorização por papel concentradas na camada de aplicação (RN01, RN08); arquivos acessados por URLs pré-assinadas e temporárias. |
+| **Desempenho / desacoplamento** | Operações principais publicam eventos e não esperam tarefas secundárias (RN06); o upload pesado vai do navegador direto ao storage, sem passar pela API. |
+| **Confiabilidade** | Validação de prazo no servidor (fonte de tempo única) garante consistência da RN03. |
+| **Escalabilidade** | Workers (notificação, risco) escalam de forma independente do núcleo. |
+| **Manutenibilidade** | Separação clara em camadas e por eventos facilita evolução e testes. |
 
----
-
-## 4. Impacto da Funcionalidade Inovadora (Módulo MindFlow)
-
-A funcionalidade gamificada "MindFlow" (organização automática de tarefas prioritárias) causa as seguintes adaptações arquiteturais:
-* **Camada de Processamento:** Exige a criação de *cron jobs* (rotinas agendadas) no Worker assíncrono para recalcular os pesos de prioridade das tarefas toda madrugada.
-* **Camada de Dados:** Necessidade de cache em memória (Redis) para entregar o dashboard do aluno rapidamente, evitando varrer o banco de dados transacional completo a cada login.
+> As decisões arquiteturais detalhadas (com contexto, alternativas e consequências) estão em [`decisoes-arquiteturais.md`](./decisoes-arquiteturais.md).
