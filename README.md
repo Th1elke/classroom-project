@@ -5,7 +5,7 @@ Sistema de gestão de turmas, atividades, avaliações e comunicação entre pro
 
 ## 👥 Integrantes
 - _Gustavo Henrique Thielke_
-- _	Matheus Meggiolaro Bönmann_
+- _Matheus Meggiolaro Bönmann_
 - _Murilo Gomes Monteiro Morgado_
 - _Pedro Ribas Meotti_
 
