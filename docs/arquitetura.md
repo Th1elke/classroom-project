@@ -27,10 +27,10 @@ A decisão considerou os **requisitos** e o **contexto** do sistema:
 
 ## 3. Modelo C4
 
-### Nível 1 — Contexto (`C4contexto.png`)
-Mostra o sistema **AulaConecta** no centro, os quatro tipos de usuário (Estudante, Professor, Coordenador, Administrador) e os sistemas externos: **Serviço de Notificação** (e-mail/push) e **Armazenamento de Arquivos** (object storage).
+### Nível 1 — Contexto (`c4/contexto.png`)
+Mostra o sistema **AulaConecta** no centro, os quatro tipos de usuário (Estudante, Professor, Coordenador, Administrador) e os sistemas externos: **Provedor de Notificação** (e-mail/push) e **Armazenamento de Arquivos** (object storage).
 
-### Nível 2 — Containers (`C4containers.png`)
+### Nível 2 — Containers (`c4/containers.png`)
 Detalha os containers internos:
 - **Aplicação Web (SPA)** — React, interface do usuário (HTTPS); **faz o upload/download dos arquivos das entregas direto no object storage**, usando URL pré-assinada.
 - **API / Backend (em camadas)** — aplica regras, autenticação e casos de uso; expõe API JSON; **emite as URLs pré-assinadas** que autorizam o envio dos arquivos.
@@ -38,7 +38,8 @@ Detalha os containers internos:
 - **Message Broker (pub/sub)** — distribui eventos do domínio.
 - **Serviço de Notificações (worker)** — consome eventos e aciona o provedor de e-mail/push.
 - **Serviço de Risco de Evasão (worker)** — consome eventos de engajamento e gera o indicador de risco (inovação).
-- **Object Storage (externo)** — guarda os arquivos das entregas.
+- **Provedor de Notificação (externo)** — serviço de e-mail/push acionado pelo Serviço de Notificações.
+- **Armazenamento de Arquivos (externo)** — object storage; guarda os arquivos das entregas.
 
 ## 4. Requisitos não funcionais atendidos
 
