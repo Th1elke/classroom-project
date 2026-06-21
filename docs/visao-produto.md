@@ -1,21 +1,43 @@
-# Visão do Produto — ClassHub
+# Visão do Produto — AulaConecta
 
-## 1. Problema a Ser Resolvido
-Atualmente, as instituições de ensino enfrentam a fragmentação dos canais de comunicação e a falta de centralização na distribuição e recebimento de materiais acadêmicos. Essa dispersão de ferramentas (e-mails, grupos de mensagens, links soltos em nuvem) causa desorganização, perda de prazos por parte dos alunos e dificulta imensamente o acompanhamento do desempenho e o gerenciamento de notas por parte dos professores.
+> Sistema de Gestão de Sala de Aula Online (semelhante ao Google Classroom)
+> Disciplina: Modelagem e Projetos em Engenharia de Software
 
-## 2. Público-Alvo
-A plataforma é desenhada para atender os principais atores do ecossistema educacional:
-* **Estudantes:** Consumidores do conteúdo que precisam acompanhar cronogramas, acessar materiais e realizar a submissão de atividades e trabalhos.
-* **Professores:** Produtores de conteúdo responsáveis por estruturar turmas, publicar materiais, elaborar avaliações e gerenciar o lançamento de notas.
-* **Coordenadores:** Usuários focados na gestão acadêmica, necessitando de uma visão gerencial para acompanhar o andamento das disciplinas e o nível de engajamento das turmas.
-* **Administradores:** Responsáveis pelo cadastro estrutural da instituição, manutenção da plataforma e gestão de acessos e segurança.
+## 1. Problema a ser resolvido
 
-## 3. Objetivos da Solução
-O principal objetivo do **ClassHub** é desenvolver uma plataforma digital centralizada e intuitiva para apoiar o fluxo completo e contínuo de ensino. O sistema visa unificar a gestão de turmas, o compartilhamento de conteúdo, a aplicação de avaliações e a comunicação entre o corpo docente e os estudantes em um único ambiente virtual padronizado.
+Instituições de ensino enfrentam dificuldade para **centralizar a gestão de turmas, atividades, avaliações e comunicação** entre professores e estudantes. Hoje esse fluxo costuma estar espalhado em e-mails, grupos de mensagem, planilhas e arquivos soltos, o que gera:
 
-## 4. Benefícios Esperados
-A implementação do sistema entregará valor imediato para todos os envolvidos:
-* **Para os Estudantes:** Centralização do material de estudo, visão clara de prazos (reduzindo a inadimplência em entregas) e facilidade para acompanhar o próprio desempenho histórico.
-* **Para os Professores:** Redução drástica do tempo gasto com organização de arquivos e e-mails, proporcionando um fluxo linear, rastreável e seguro para o recebimento e correção de tarefas.
-* **Para a Instituição:** Rastreabilidade institucional, padronização dos processos acadêmicos digitais e fornecimento de dados consolidados para apoiar a tomada de decisões.
+- perda de prazos e entregas extraviadas;
+- falta de um histórico único de notas e feedbacks;
+- comunicação desorganizada entre professor e turma;
+- dificuldade do professor em **enxergar quem está se desengajando** antes que seja tarde.
 
+A instituição deseja uma **plataforma digital única** que apoie todo o ciclo de ensino: criação de turmas, matrícula, publicação de atividades, entrega, correção, lançamento de notas e comunicação.
+
+## 2. Público-alvo
+
+- **Estudantes** — acompanham turmas, recebem atividades, entregam tarefas e consultam notas/feedbacks.
+- **Professores** — criam turmas e atividades, corrigem entregas, lançam notas e se comunicam com a turma.
+- **Coordenadores** — supervisionam turmas e professores, acompanham desempenho geral.
+- **Administradores** — gerenciam usuários, permissões e a configuração da instituição.
+
+## 3. Objetivos da solução
+
+1. Centralizar em um único ambiente o ciclo completo de uma atividade: **criar → publicar → entregar → corrigir → avaliar**.
+2. Garantir **controle de acesso por papel** (professor, estudante, coordenador, administrador).
+3. Organizar a **comunicação** entre professor e turma de forma rastreável.
+4. Oferecer **notificações automáticas** de eventos relevantes (nova atividade, nota lançada, prazo próximo).
+5. Dar ao professor **visibilidade sobre o engajamento** dos estudantes para apoiar a permanência.
+
+## 4. Benefícios esperados
+
+| Para quem | Benefício |
+|-----------|-----------|
+| Estudante | Tudo em um só lugar: atividades, prazos, notas e feedback, com lembretes automáticos. |
+| Professor | Menos trabalho operacional; correção e lançamento de notas organizados; visão de quem precisa de atenção. |
+| Coordenador | Acompanhamento do andamento das turmas e do desempenho dos estudantes. |
+| Instituição | Padronização do processo pedagógico, histórico confiável e melhoria nos índices de permanência. |
+
+## 5. Funcionalidade Inovadora (resumo)
+
+**Painel de Risco de Evasão / Alertas de Engajamento.** A partir de eventos já gerados na plataforma (logins, entregas no prazo, atrasos, notas baixas, ausência de acesso), o sistema calcula um **indicador de risco** por estudante e alerta o professor sobre quem está se desengajando, permitindo intervenção precoce. Detalhada nos artefatos da fase de projeto; mencionada aqui porque influencia requisitos e arquitetura (necessidade de processamento de eventos).
