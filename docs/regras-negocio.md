@@ -1,30 +1,49 @@
-# Regras de Negócio — ClassHub
+# Regras de Negócio — AulaConecta
 
+Foram identificadas **8 regras de negócio** relevantes para o domínio de gestão de sala de aula online. Ao final, demonstramos como **duas delas (RN03 e RN06)** influenciam User Stories, processos de negócio (BPMN), modelagem e decisões arquiteturais.
 
-## 1. Listagem das Regras de Negócio
+## 1. Regras de Negócio
 
-* **RN01 - Restrição de Criação de Turmas:** Apenas usuários autenticados com o perfil "Professor" ou "Administrador" possuem permissão para criar, editar ou excluir turmas no sistema.
-* **RN02 - Acesso Exclusivo a Matriculados:** Um estudante só pode acessar os materiais, o mural de avisos e as atividades de uma turma se possuir o status de "Matriculado" nela, mediante a inserção prévia de um código de acesso válido.
-* **RN03 - Controle de Prazo de Entregas:** O prazo limite (data e hora) de envio de uma atividade encerra automaticamente a aceitação de novas submissões, a menos que o professor habilite explicitamente a opção "Aceitar entregas com atraso" nas configurações da atividade.
-* **RN04 - Sigilo de Avaliações:** As notas atribuídas a uma entrega são estritamente sigilosas. Elas só podem ser visualizadas pelo próprio estudante que realizou a submissão, pelos professores vinculados àquela turma e por coordenadores com privilégios gerenciais.
-* **RN05 - Limite Técnico de Anexos:** Arquivos anexados em entregas de atividades (pelos alunos) ou materiais de aula (pelos professores) não podem ultrapassar o limite de 50MB por arquivo.
-* **RN06 - Automação do MindFlow (Inovação):** O painel Kanban pessoal do aluno deve priorizar e reordenar as tarefas automaticamente todos os dias, calculando a urgência com base na quantidade de dias restantes para o encerramento do prazo.
+| ID | Regra de Negócio |
+|----|------------------|
+| **RN01** | Apenas **professores** (e coordenadores) podem criar turmas e atividades. Estudantes não têm essa permissão. |
+| **RN02** | Um estudante só acessa o conteúdo de uma turma **após estar matriculado e aprovado** nela. |
+| **RN03** | Entregas de atividades só são aceitas **até a data/hora limite**. Após o prazo, a entrega é bloqueada ou marcada como *atrasada*, conforme a política definida pelo professor na turma. |
+| **RN04** | Cada atividade possui uma **nota máxima**, e a correção só pode ser realizada pelo **professor responsável** pela turma. |
+| **RN05** | A matrícula em uma turma exige um **código de convite** (ou aprovação do professor), garantindo que apenas estudantes autorizados ingressem. |
+| **RN06** | O sistema deve **notificar automaticamente** os estudantes quando uma nova atividade for publicada e quando uma nota for lançada. |
+| **RN07** | Um estudante **não pode editar uma entrega após ela ter sido corrigida** (nota lançada). |
+| **RN08** | Dados pessoais e notas de um estudante só são visíveis ao **próprio estudante** e aos **professores/coordenadores** da turma (conformidade com a LGPD). |
 
----
+## 2. Demonstração de impacto
 
-## 2. Rastreabilidade e Impactos na Solução
+### RN03 — Entregas só são aceitas até o prazo
 
-Para demonstrar a influência direta das regras de negócio na concepção e modelagem do sistema, detalhamos abaixo os impactos estruturais de duas regras fundamentais:
+| Dimensão | Impacto |
+|----------|---------|
+| **User Story** | US04 — *Como estudante, desejo entregar uma atividade antes do prazo para que minha tarefa seja registrada e avaliada.* (Critério de aceitação inclui o bloqueio/marcação após o prazo.) |
+| **Caso de Uso** | "Entregar Atividade" — com fluxo alternativo de **prazo expirado**. |
+| **BPMN** | No processo *Entrega de Atividade*, há um **gateway exclusivo** que verifica `data_atual ≤ data_limite`. Se verdadeiro, registra a entrega; se falso, segue o caminho de *entrega bloqueada/atrasada*. |
+| **Arquitetura** | A validação de prazo deve ser feita **no backend** (não confiar no relógio do cliente), exigindo um serviço com **fonte de tempo confiável**; impacta a consistência e a necessidade de **agendamento** (jobs para fechar prazos e marcar atrasos). |
+| **Requisito Não Funcional** | **Confiabilidade/Consistência temporal** — o horário do servidor é a referência única. |
 
-### Impactos da RN01 (Restrição de Criação de Turmas)
-O fato de o sistema proibir alunos de criarem turmas afeta múltiplas camadas da aplicação:
-* **Impacto em Requisitos (User Story):** Gera a criação da **US01**, que descreve explicitamente: *"Como professor, desejo criar uma nova turma..."*.
-* **Impacto em Modelagem (Casos de Uso):** No Diagrama de Casos de Uso (UML), a ação "Criar Turma" possui uma linha de associação apontando exclusivamente para o ator `Professor` (e `Administrador`), sem ligação com o ator `Estudante`.
-* **Impacto em Processos (BPMN):** Ao modelar o fluxo de "Abertura de Turma", o processo obrigatoriamente se inicia dentro de uma raia (*swimlane*) dedicada ao ator Professor, isolando as responsabilidades.
-* **Impacto em Arquitetura e Segurança:** Exige a implementação de uma arquitetura com controle de acesso baseado em funções (RBAC). A API no back-end precisa validar se o *token* (JWT) do usuário que faz a requisição possui a *claim* de "professor" antes de gravar a turma no banco de dados.
+### RN06 — Notificações automáticas de eventos
 
-### Impactos da RN03 (Controle de Prazo de Entregas)
-A necessidade de bloquear envios ou sinalizar atrasos altera a lógica de validação de dados e a interface:
-* **Impacto em Requisitos (User Story):** A **US04** (Submissão de Entregas) inclui em seus critérios de aceitação que *"Se o prazo limite tiver expirado, o sistema deve bloquear o envio ou marcar visualmente como entregue com atraso"*.
-* **Impacto em Processos (BPMN):** No diagrama do processo de "Entrega de Atividade", logo após a ação do aluno de enviar o arquivo, é necessário incluir um **Gateway Exclusivo (Losango com um 'X')** com a pergunta "Prazo Expirado?". Se "Sim", o fluxo diverge para um evento de recusa ou para uma marcação de atraso. Se "Não", segue o fluxo normal.
-* **Impacto em Arquitetura (Decisão de Banco de Dados):** O banco de dados precisa registrar obrigatoriamente o *timestamp* (data e hora exatas) no momento exato em que a API recebe o arquivo (*upload*), para que esse valor seja matematicamente comparado com a coluna `data_vencimento` da tabela de Atividades.
+| Dimensão | Impacto |
+|----------|---------|
+| **User Story** | US07 — *Como estudante, desejo receber notificações de novas atividades e notas para não perder prazos.* |
+| **Caso de Uso** | "Notificar Estudante" — disparado por *Publicar Atividade* e *Lançar Nota*. |
+| **BPMN** | Nos processos *Publicação de Atividade* e *Correção de Atividade*, há um **evento de envio de notificação** ao final do fluxo. |
+| **Arquitetura** | A notificação não deve **bloquear** a publicação/correção. Isso favorece uma abordagem **assíncrona, orientada a eventos** (publish/subscribe ou fila de mensagens), em que o serviço de notificações **consome eventos** emitidos por outros componentes. |
+| **Decisão Arquitetural** | Justifica a adoção de um **mecanismo de mensageria/eventos** (a ser detalhado em `arquitetura.md`), que também é **reaproveitado** pela Funcionalidade Inovadora (Painel de Risco de Evasão), que consome os mesmos eventos de engajamento. |
+| **Requisito Não Funcional** | **Desempenho e desacoplamento** — operações principais não esperam o envio das notificações. |
+
+## 3. Rastreabilidade (resumo)
+
+```
+RN03 → US04 → UC "Entregar Atividade" → BPMN (gateway de prazo) → Backend valida tempo → RNF Consistência
+RN06 → US07 → UC "Notificar Estudante" → BPMN (evento de notificação) → Mensageria assíncrona → Decisão Arquitetural
+RN01 → US01/US03 → Controle de acesso por papel → Autenticação/Autorização (RNF Segurança)
+```
+
+> O objetivo não é apenas listar regras, mas mostrar como elas **moldam** os requisitos, os processos e a arquitetura da solução.
