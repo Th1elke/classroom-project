@@ -12,7 +12,7 @@ Registro do processo de construção da solução ao longo das duas aulas da ava
 
 | Integrante | Responsabilidade |
 |------------|-------------------|
-| _Pedro Ribas Meotti_ | Visão do Produto, Stakeholders, README |
+| _Gabriel Ribeiro Rosa_ | Visão do Produto, Stakeholders, README |
 | _Murilo Gomes Monteiro Morgado_ | Regras de Negócio, User Stories |
 | _Matheus Meggiolaro Bönmann_ | MVP, Backlog |
 | _Gustavo Henrique Thielke_ | Configuração do repositório GitHub e do quadro Kanban |
@@ -46,7 +46,7 @@ Registro do processo de construção da solução ao longo das duas aulas da ava
 | _Matheus Meggiolaro Bönmann_ | BPMN — processo de Entrega de Atividade |
 | _Murilo Gomes Monteiro Morgado_ | UML — Diagrama de Casos de Uso |
 | _Gustavo Henrique Thielke_ | Arquitetura + Modelo C4 (Contexto e Containers) |
-| _Pedro Ribas Meotti_ | Decisões Arquiteturais (ADRs) e revisão geral de consistência |
+| _Gabriel Ribeiro Rosa_ | Decisões Arquiteturais (ADRs) e revisão geral de consistência |
 
 ### Principais decisões tomadas
 - Escolha da arquitetura **híbrida (Camadas + Publish/Subscribe)**, em vez de monolito puro ou microsserviços — justificada em `docs/arquitetura.md` e detalhada no ADR-01.
