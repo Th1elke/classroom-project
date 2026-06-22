@@ -10,7 +10,7 @@ Sistema de gestão de turmas, atividades, avaliações e comunicação entre pro
 - _Murilo Gomes Monteiro Morgado_
 
 ## 🔗 Links
-- **Gestor de Projetos (Kanban):** _inserir link do GitHub Projects / Trello / Jira_
+- **Gestor de Projetos (Kanban):** _https://github.com/users/Th1elke/projects/8_
 - **Apresentação final:** `apresentacao/`
 
 ## ✨ Funcionalidade Inovadora
