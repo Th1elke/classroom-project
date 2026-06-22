@@ -4,14 +4,14 @@ Projeto da disciplina **Modelagem e Projetos em Engenharia de Software** — Pro
 Sistema de gestão de turmas, atividades, avaliações e comunicação entre professores e estudantes, semelhante ao Google Classroom.
 
 ## 👥 Integrantes
-- _Gabriel Ribeiro Rosa_
-- _Gustavo Henrique Thielke_
-- _Matheus Meggiolaro Bönmann_
-- _Murilo Gomes Monteiro Morgado_
+- Gabriel Ribeiro Rosa
+- Gustavo Henrique Thielke
+- Matheus Meggiolaro Bönmann
+- Murilo Gomes Monteiro Morgado
 
 ## 🔗 Links
-- **Gestor de Projetos (Kanban):** _https://github.com/users/Th1elke/projects/8_
-- **Apresentação final:** `apresentacao/`
+- **Gestor de Projetos (Kanban):** https://github.com/users/Th1elke/projects/8
+- **Apresentação final:** [apresentacao/apresentacao-final.pdf](apresentacao/AulaConecta.pdf)
 
 ## ✨ Funcionalidade Inovadora
 **Painel de Risco de Evasão / Alertas de Engajamento** — calcula um indicador de risco por estudante a partir dos eventos de uso (acessos, entregas, atrasos, notas) e alerta o professor para intervir precocemente. Reaproveita os mesmos eventos do mecanismo de notificações (ver `docs/arquitetura.md`).
@@ -43,7 +43,7 @@ classroom-project/
 │   ├── contexto.png                # C4 Nível 1 — Contexto
 │   └── containers.png              # C4 Nível 2 — Containers
 └── apresentacao/
-    └── apresentacao-final.pdf
+    └── AulaConecta.pdf
 ```
 
 ## ✅ Concepção da Solução (Aula 1) — concluído
@@ -62,4 +62,3 @@ classroom-project/
 - [x] Decisões arquiteturais — 5 ADRs (`docs/decisoes-arquiteturais.md`)
 - [x] Diário de sprint (`docs/sprint.md`)
 - [x] Apresentação final (`apresentacao/`)
-
