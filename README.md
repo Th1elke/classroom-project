@@ -6,7 +6,7 @@ Sistema de gestão de turmas, atividades, avaliações e comunicação entre pro
 ## 👥 Integrantes
 - Gabriel Ribeiro Rosa
 - Gustavo Henrique Thielke
-- Matheus Meggiolaro Bönmann
+- Matheus 
 - Murilo Gomes Monteiro Morgado
 
 ## 🔗 Links
