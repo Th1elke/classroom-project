@@ -60,8 +60,6 @@ classroom-project/
 - [x] Casos de Uso — UML (`uml/`)
 - [x] Arquitetura + Modelo C4 — Contexto e Containers (`docs/arquitetura.md`, `c4/`)
 - [x] Decisões arquiteturais — 5 ADRs (`docs/decisoes-arquiteturais.md`)
+- [x] Diário de sprint (`docs/sprint.md`)
+- [x] Apresentação final (`apresentacao/`)
 
-## 🔜 Pendente
-- [ ] Diário de sprint (`docs/sprint.md`)
-- [ ] Apresentação final (`apresentacao/`)
-- [ ] Preencher integrantes e link do gestor de projetos acima
